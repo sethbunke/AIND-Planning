@@ -21,16 +21,16 @@ class HaveCakeProblem(Problem):
         self.actions_list = self.get_actions()
 
     def get_actions(self):
-        precond_pos = [expr("Have(Cake)")]
+        precond_pos = [expr("Have(Cake)")] #have cake
         precond_neg = []
-        effect_add = [expr("Eaten(Cake)")]
-        effect_rem = [expr("Have(Cake)")]
+        effect_add = [expr("Eaten(Cake)")] #eat cake
+        effect_rem = [expr("Have(Cake)")] #no longer have cake
         eat_action = Action(expr("Eat(Cake)"),
                             [precond_pos, precond_neg],
                             [effect_add, effect_rem])
         precond_pos = []
-        precond_neg = [expr("Have(Cake)")]
-        effect_add = [expr("Have(Cake)")]
+        precond_neg = [expr("Have(Cake)")] #before - don't have cake?
+        effect_add = [expr("Have(Cake)")] #after - have cake
         effect_rem = []
         bake_action = Action(expr("Bake(Cake)"),
                              [precond_pos, precond_neg],
