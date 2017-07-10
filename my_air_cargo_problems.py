@@ -115,7 +115,7 @@ class AirCargoProblem(Problem):
                 for cargo in self.cargos:
                     for plane in self.planes:
                         precond_pos = [expr("In({}, {})".format(cargo, plane)), expr("At({}, {})".format(plane, airport))]
-                        precond_neg = [] #not in any plane?
+                        precond_neg = [] 
                         effect_add = [expr("At({}, {})".format(cargo, airport))]
                         effect_rem = [expr("In({}, {})".format(cargo, plane))] 
                         unload_action = Action(expr("Unload({}, {}, {})".format(cargo, plane, airport)),
@@ -240,8 +240,27 @@ class AirCargoProblem(Problem):
         executed.
         """
         # TODO implement (see Russell-Norvig Ed-3 10.2.3  or Russell-Norvig Ed-2 11.2)
-        count = 0
-        return count
+
+        #get number of goal states, look for those goal states in the current state, return the difference
+        #g_states = self.goal#
+
+        #https://discussions.udacity.com/t/understanding-ignore-precondition-heuristic/225906/2
+        #how many goal states are not in the current state
+
+
+        goal = self.goal
+        states = self.state_map
+
+        goal_states = set(goal) & set(states)
+        count = len(goal_states)
+        if count == len(goal):
+            return count
+        else:
+            return len(goal) - len(goal_states)
+        #else for each goal, find a path? 
+
+        # count = 0
+        # return count
 
 
 def air_cargo_p1() -> AirCargoProblem:
@@ -319,4 +338,60 @@ def air_cargo_p2() -> AirCargoProblem:
 
 def air_cargo_p3() -> AirCargoProblem:
     # TODO implement Problem 3 definition
-    pass
+    cargos = ['C1', 'C2', 'C3', 'C4']
+    planes = ['P1', 'P2']
+    airports = ['JFK', 'SFO', 'ATL' 'ORD']
+    pos = [expr('At(C1, SFO)'),
+           expr('At(C2, JFK)'),
+           expr('At(C3, ATL)'),
+           expr('At(C4, ORD)'),
+           
+           expr('At(P1, SFO)'),
+           expr('At(P2, JFK)'),
+           
+           ]
+    neg = [
+           expr('At(C1, JFK)'),
+           expr('At(C1, ATL)'),
+           expr('At(C1, ORD)'),
+           expr('In(C1, P1)'),
+           expr('In(C1, P2)'),
+           
+
+           expr('At(C2, SFO)'), 
+           expr('At(C2, ATL)'),
+           expr('At(C2, ORD)'),
+           expr('In(C2, P1)'),
+           expr('In(C2, P2)'),
+           
+
+           expr('At(C3, JFK)'),
+           expr('At(C3, SFO)'),
+           expr('At(C3, ORD)'),
+           expr('In(C3, P1)'),
+           expr('In(C3, P2)'),
+           
+
+           expr('At(C4, JFK)'),
+           expr('At(C4, SFO)'),
+           expr('At(C4, ATL)'),
+           expr('In(C4, P1)'),
+           expr('In(C4, P2)'),
+           
+
+           expr('At(P1, JFK)'),
+           expr('At(P1, ATL)'),
+           expr('At(P1, ORD)'),
+           
+           expr('At(P2, SFO)'),
+           expr('At(P2, ATL)'),
+           expr('At(P2, ORD)'),
+
+           ]
+    init = FluentState(pos, neg)
+    goal = [expr('At(C1, JFK)'),
+            expr('At(C2, SFO)'),
+            expr('At(C3, JFK)'),
+            expr('At(C4, SFO)'),
+            ]
+    return AirCargoProblem(cargos, planes, airports, init, goal)
