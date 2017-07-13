@@ -499,7 +499,23 @@ class PlanningGraph():
 
         :return: int
         """
+        # level_sum = 0
+        # # TODO implement
+        # # for each goal in the problem, determine the level cost, then add them together
+        # return 
+        #    :return: int
+        
         level_sum = 0
-        # TODO implement
+        visistedStates = set()
         # for each goal in the problem, determine the level cost, then add them together
-        return level_sum
+        for g in self.problem.goal:
+            l_index = -1
+            for levelStates in self.s_levels:
+                l_index += 1
+                for state in levelStates:
+                    if (g == state.symbol and state not in visistedStates):
+                        level_sum += l_index
+                        visistedStates.add(state)
+                        break
+
+        return level_sum - 1
