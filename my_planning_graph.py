@@ -473,6 +473,17 @@ class PlanningGraph():
         :return: bool
         """
         # TODO test for negation between nodes
+        # return False
+
+        # if node_s1.is_mutex(node_s2) or node_s2.is_mutex(node_s1):
+        #     return True
+        # else:
+        #     return False
+
+        #same symbol but different one is pos and the other is negative
+        if (node_s1.symbol == node_s2.symbol) and (node_s1.is_pos != node_s2.is_pos):
+            return True
+
         return False
 
     def inconsistent_support_mutex(self, node_s1: PgNode_s, node_s2: PgNode_s):
