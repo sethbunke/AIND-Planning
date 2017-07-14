@@ -407,7 +407,24 @@ class PlanningGraph():
         :return: bool
         """
         # TODO test for Inconsistent Effects between nodes
+        #return False
+
+        #FOR TESTING
+        # node_a1 = PgNode_a(Action(expr('Noop(At(here))'),
+        #                            [[expr('At(here)')], []], [[expr('At(here)')], []]))
+        # node_a2 = PgNode_a(Action(expr('Reverse(At(here))'),
+        #                            [[expr('At(here)')], []], [[], [expr('At(here)')]]))
+
+        # a1_action = node_a1.action
+        # a2_action = node_a2.action
+
+        for e_1 in node_a1.effnodes:
+            for e_2 in node_a2.effnodes:
+                if (e_1.symbol == e_2.symbol) and (e_1.is_pos != e_2.is_pos):
+                    return True
+
         return False
+        #pass
 
     def interference_mutex(self, node_a1: PgNode_a, node_a2: PgNode_a) -> bool:
         """
