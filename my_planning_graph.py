@@ -441,6 +441,23 @@ class PlanningGraph():
         :return: bool
         """
         # TODO test for Interference between nodes
+        #return False
+
+        # node_a1 = PgNode_a(Action(expr('Noop(At(here))'),
+        #                            [[expr('At(here)')], []], [[expr('At(here)')], []]))
+        # node_a2 = PgNode_a(Action(expr('Reverse(At(here))'),
+        #                            [[expr('At(here)')], []], [[], [expr('At(here)')]]))
+
+        for e_1 in node_a1.effnodes:
+            for p_2 in node_a2.prenodes:
+                if (e_1.symbol == p_2.symbol) and (e_1.is_pos != p_2.is_pos):
+                    return True
+
+        for e_2 in node_a2.effnodes:
+            for p_1 in node_a1.prenodes:
+                if (p_1.symbol == e_2.symbol) and (p_1.is_pos != e_2.is_pos):
+                    return True
+
         return False
 
     def competing_needs_mutex(self, node_a1: PgNode_a, node_a2: PgNode_a) -> bool:
